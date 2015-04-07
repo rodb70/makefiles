@@ -1,0 +1,45 @@
+# This is a simple example of using the build system.
+#
+COMPILER := sdcc
+CPU := lpc935
+BLD_TYPE := debug
+TARGET := dmxled
+# declare the compiler, cpu, build type and target
+
+CSRC :=
+CSRC += sys_tic.c
+CSRC += dmx_coms.c
+CSRC += dmx_ui.c
+CSRC += dmxapp.c
+CSRC += eeprom_drv.c 
+CSRC += ccu_pwm.c
+
+# This is where main is declared and interrupt functions are prototyped and must be first in SDCC world.
+SRC_MAIN := dmxled.c
+#source code used to build this target.  (SRC_MAIN is SDCC specific)
+
+
+ifneq ($(filter test%,$(MAKECMDGOALS)),)
+PROJ_DIRS := test
+INC := .
+LFLAGS := -lcunit
+endif
+# If making the test target add library and an extra directory called test
+
+include makefiles/main.mk
+# include the build system and make what ever targets are required.
+
+# Target declared here are not part of the build system just simple names to aid auto builders or users.
+.PHONY:test
+test:
+	make test_lpc935_dmxled
+
+.PHONY:test-clean
+test-clean:
+	make clean_lpc935_dmxled
+
+.PHONY:test-run
+test-run: test
+	./$(BLD_OUTPUT)/dmxled
+
+

@@ -1,0 +1,25 @@
+This is a makefile subsystem when writting code.
+
+I wanted a boiler plate system that I could use in my own projects.  I was 
+getting sick of continually writting the same make code for each new project so
+I have created this system.
+
+My design goals were:
+* Wanted to be able to add new compilers eaisly just adding the differences
+* Wanted to be able to add source files simple by adding them to a varaible in 
+  a makefile
+* Wanted to be able to put code in libraries or link to main application
+* Wanted to add tools simply and intergrate these tools into the build system
+* Wanted to be able to write test harnesses and have then intergrated simply.
+
+Currently supported are:
+STM32 cortex GCC 
+AVR mostly for Arduino but can add any 8-bit AVR - GCC (this still needs work)
+LPC935 via the SDCC compiler
+
+This makefile systemn has 2 modes of operation a simple mode where all source 
+code is included in the top level makefile.  The complex mode of operation is 
+where multi-targets are supported via systems.  These systems can be different
+processors and have various tools required to build the system .
+
+Both top level makefiles are seen in the examples directory.

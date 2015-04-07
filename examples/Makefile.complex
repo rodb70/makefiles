@@ -1,0 +1,25 @@
+# File:       Makefile
+# Written by: Rod Boyce
+# e-mail:     rod@boyce.net.nz
+#
+#
+
+TARGET := dmx-eval
+BLD_TYPE := debug
+# This top level makefile is a complex example as there are a number if assumption in the build 
+# system this this make use of.
+# The target declared above assumes that there is a sub-directory called system/dmx-eval that 
+# contains a list of directoories to visit that contain source code to make this target.  This
+# system directory also declares the CPU type used and the compiler used to make this target.
+
+PROJ_DIRS += source/tools/dfuse
+DFUSE_START_ADDR := 0x08004000
+TARGET_SUFFIX := .dfu
+# This variables above add an extra directory under source/tools/dfuse that contains source.
+# In this case the makefiel fragment in that directory declares a tool that takes in bin format
+# files and outputs dfu format files.  The variable TARGET_SUFFIX is overiding the default 
+# output suffix.
+
+
+include makefiles/main.mk
+# Include the build system to start this all off.
