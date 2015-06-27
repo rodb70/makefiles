@@ -209,7 +209,10 @@ endif
 # Read in source files to build
 $(foreach dir,$(strip $(PROJ_DIRS)),$(eval $(call MK_PROJECT,$(dir))))
 $(foreach dir,$(strip $(PROJ_DIRS)),$(if $(wildcard $(dir)/$(REALCPU)),$(eval $(call MK_PROJECT,$(dir)/$(REALCPU)))))
-
+ifeq ($(BLD_TYPE),test)
+$(foreach dir,$(strip $(PROJ_DIRS)),$(if $(wildcard $(dir)/test),$(eval $(call MK_PROJECT,$(dir)/test))))
+else
+endif
 .PHONY: tools
 tools: $(addprefix ./$(BLD_OUTPUT)/bin/,$(TOOLS))
 
