@@ -55,6 +55,7 @@
 #-----------------------------------------------------------------------------
 # Include dir paths in makefile system
 #-----------------------------------------------------------------------------
+.DELETE_ON_ERROR: # Add this to delete target on error
 # Path to makefile include files
 MAK_PATH := makefiles
 include $(MAK_PATH)/paths.mk
