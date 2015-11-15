@@ -46,6 +46,17 @@ COMFLAGS += -Wall
 COMFLAGS += -Wextra 
 COMFLAGS += -fstrict-overflow
 
+COMFLAGS += -Wno-strict-aliasing
+CFLAGS += -Wstrict-prototypes
+COMFLAGS += -Wundef
+COMFLAGS += -Wextra
+COMFLAGS += -Wunreachable-code
+COMFLAGS += -fstrict-aliasing
+COMFLAGS += -funsigned-bitfields
+COMFLAGS += -fshort-enums
+COMFLAGS += -fno-builtin
+COMFLAGS += -fno-common
+
 ifneq ($(SHORT_ENUMS),n)
 # Create smallets enum by default unless disabled in system file
 COMFLAGS += -fshort-enums

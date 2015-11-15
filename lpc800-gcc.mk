@@ -49,17 +49,8 @@ AFLAGS += -mthumb
 
 CFLAGS += -mcpu=cortex-m0plus
 CFLAGS += -mthumb
-CFLAGS += -Wno-strict-aliasing
-CFLAGS += -Wstrict-prototypes
-CFLAGS += -Wundef
-CFLAGS += -Wextra
-CFLAGS += -Wunreachable-code
-CFLAGS += -fstrict-aliasing
-CFLAGS += -fsingle-precision-constant
-CFLAGS += -funsigned-bitfields
-CFLAGS += -fshort-enums
-CFLAGS += -fno-builtin
-CFLAGS += -fno-common
+
+COMFLAGS += -fsingle-precision-constant
 
 LFLAGS += -mcpu=cortex-m0plus -mthumb
 ifeq ($(filter specs,$(LFLAGS)),)
