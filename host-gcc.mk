@@ -59,6 +59,14 @@ override TARGET_SUFFIX := .DoNotUseThisEmbeddedOnly
 # After generic targets 
 include $(MAK_PATH)/$(COMPILER).mk 
 
+ifeq ($(BLD_TYPE),test)
+ifneq ($(GCONV_ENABLED),n)
+# Link with gcov for test builds
+EXTRA_LIBS += -lgcov
+COMFLAGS += -fprofile-arcs -ftest-coverage
+endif
+endif
+
 # end of middle
 endif
 

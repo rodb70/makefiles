@@ -69,6 +69,8 @@ include $(MAK_PATH)/macros.mk
 #-----------------------------------------------------------------------------
 # Decleare these all instant expansion
 #-----------------------------------------------------------------------------
+# To disable automatic linking of gconv for testing build set GCONV_ENABLED to n
+# GCONV_ENABLED := n
 # PROJ_DIRS - project directory that are included in to the makefile system
 PROJ_DIRS := $(PROJ_DIRS)
 # CPU - is the name of the CPU being used this must be set for a build to 
