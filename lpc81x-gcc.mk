@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------------------
-# Makefile bits for the LPC800 chip using gcc as the compiler
+# Makefile bits for the LPC81X chip using gcc as the compiler
 #-License----------------------------------------------------------------------
 #Copyright (c) 2011, developer@teamboyce.com
 #All rights reserved.
@@ -77,9 +77,9 @@ ifeq ($(INC_PART),lower)
 # If not linker script defined use the default
 ifeq ($(LNK_SCR),)
 # only set this here if not already set this means this can be overriden
-#LNK_SCR := source/cpu/lpc800/core/lpc810.ld
-#LNK_SCR := source/cpu/lpc800/core/lpc811.ld
-LNK_SCR := source/cpu/lpc800/core/lpc812.ld
+#LNK_SCR := source/cpu/lpc81x/core/lpc810.ld
+#LNK_SCR := source/cpu/lpc81x/core/lpc811.ld
+LNK_SCR := source/cpu/lpc81x/core/lpc812.ld
 endif
 
 LFLAGS += -T$(LNK_SCR) -nostartfiles 
