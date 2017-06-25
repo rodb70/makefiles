@@ -167,7 +167,7 @@ $(BLD_OUTPUT)/$(BLD_TARGET).pp: $($(BLD_TARGET)-bldeps)
 	$(LINT_CC)  -E $(CFLAGS) $(CXXFLAGS) $^ > $@
 
 $(BLD_OUTPUT)/flint_done: $(BLD_OUTPUT)/size-options.lnt $($(BLD_TARGET)-bldeps)
-	$(LINT_EXE) -i$(BLD_OUTPUT) -isource/lint std.lnt env-gcc.lnt -u -b $(addprefix -i,$(INC)) $(filter-out *.lnt,$^)
+	$(LINT_EXE) -i$(BLD_OUTPUT) -isource/lint std.lnt env-gcc.lnt -u -b $(addprefix -i,$(INC)) $(filter-out %.lnt,$^)
 #	awk -f unique.awk flint.err > flint_unique.err
 	
 #end of lower
