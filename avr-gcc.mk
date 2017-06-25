@@ -37,7 +37,7 @@ endif
 
 #-----------------------------------------------------------------------------
 ifeq ($(INC_PART),upper)
-include $(MAK_PATH)/$(COMPILER).mk 
+include $(MAK_PATH)/$(call GET_COMPILER).mk 
 # Eeprom section name and flags for objcopy
 EEPROM_SECT := .eeprom
 EEPFLAGS :=
@@ -165,10 +165,11 @@ SZFLAGS += --mcu=$(subst -mmcu=,,$(filter -mmcu=%,$(AVRFLAGS)))
 OCFLAGS += -R $(EEPROM_SECT)
 ODFLAGS += -h -S
 # Add extra targets here
+ifneq ($(BLD_TYPE),lint)
 ALL_TARGETS += $(BLD_OUTPUT)/$(BLD_TARGET).eep
 ALL_TARGETS += $(BLD_OUTPUT)/$(BLD_TARGET).lss
 ALL_TARGETS += avr-size
-
+endif
 ifeq ($(IS_BOOTLOADER),y)
 LFLAGS += -Wl,--relax,--gc-sections -Wl,--section-start=.text=$(BOOT_BASE_ADDRESS)
 endif
@@ -178,7 +179,7 @@ endif # upper
 #-----------------------------------------------------------------------------
 ifeq ($(INC_PART),middle)
 # After generic targets 
-include $(MAK_PATH)/$(COMPILER).mk 
+include $(MAK_PATH)/$(call GET_COMPILER).mk 
 
 AFLAGS += $(AVRFLAGS)
 CFLAGS += $(AVRFLAGS)
@@ -217,7 +218,7 @@ endif
 
 #-----------------------------------------------------------------------------
 ifeq ($(INC_PART),lower)
-include $(MAK_PATH)/$(COMPILER).mk 
+include $(MAK_PATH)/$(call GET_COMPILER).mk 
 
 %.eep: %.elf
 	@echo "Make eep  : $@" $(NOOUT)

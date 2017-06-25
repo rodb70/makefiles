@@ -49,7 +49,7 @@ ifeq ($(INC_PART),upper)
 
 # Moved this so we can set it at the end so the embedded link rule does not fire
 TARGET_SUFFIX :=
-include $(MAK_PATH)/gcc.mk 
+include $(MAK_PATH)/$(call GET_COMPILER).mk 
 
 endif
 
@@ -58,7 +58,7 @@ ifeq ($(INC_PART),middle)
 # Add this so we can set it at the end so the embedded link rule does not fire
 TARGET_SUFFIX := .DoNotUseThisEmbeddedOnly
 # After generic targets 
-include $(MAK_PATH)/gcc.mk 
+include $(MAK_PATH)/$(call GET_COMPILER).mk 
 
 # end of middle
 endif
@@ -66,7 +66,7 @@ endif
 #-----------------------------------------------------------------------------
 ifeq ($(INC_PART),lower)
 # Bottom of the make file stuff
-include $(MAK_PATH)/gcc.mk 
+include $(MAK_PATH)/$(call GET_COMPILER).mk 
 
 #end of lower
 endif

@@ -148,6 +148,11 @@ BLD_OUTPUT := $(BLD_OUTDIR)/$(BLD_TARGET)/$(CPU)-$(BLD_TYPE)
 $(if $(CPU),,$(error CPU not in $(CPU_LIST)))
 INC += $(if $(wildcard $(SYS_PATH)/$(BLD_TARGET)/Makefile),$(SYS_PATH)/$(BLD_TARGET))
 REALCPU := $(CPU)
+ifeq ($(BLD_TYPE),lint)
+COMFLAGS += -DLINT_$(call TOUPPERCASE,$(CPU))=1
+COMFLAGS += -D__LINT__
+override TARGET_SUFFIX :=
+endif
 ifeq ($(BLD_TYPE),test)
 COMFLAGS += -DTEST_$(call TOUPPERCASE,$(CPU))=1
 CPU := host

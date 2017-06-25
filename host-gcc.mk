@@ -47,7 +47,7 @@ CROSS_COMPILE := $(dir $(shell which gcc))
 ifeq ($(INC_PART),upper)
 # Before target defines
 
-include $(MAK_PATH)/$(COMPILER).mk 
+include $(MAK_PATH)/$(call GET_COMPILER).mk 
 
 # End of upper
 endif
@@ -57,7 +57,7 @@ ifeq ($(INC_PART),middle)
 # Add this so we can set it at the end so the embedded link rule does not fire
 override TARGET_SUFFIX := .DoNotUseThisEmbeddedOnly
 # After generic targets 
-include $(MAK_PATH)/$(COMPILER).mk 
+include $(MAK_PATH)/$(call GET_COMPILER).mk 
 
 ifeq ($(BLD_TYPE),test)
 ifneq ($(GCONV_ENABLED),n)
@@ -73,7 +73,7 @@ endif
 #-----------------------------------------------------------------------------
 ifeq ($(INC_PART),lower)
 # Bottom of the make file stuff
-include $(MAK_PATH)/$(COMPILER).mk 
+include $(MAK_PATH)/$(call GET_COMPILER).mk 
 
 #end of lower
 endif

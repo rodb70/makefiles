@@ -39,7 +39,7 @@ endif
 
 #-----------------------------------------------------------------------------
 ifeq ($(INC_PART),upper)
-include $(MAK_PATH)/$(COMPILER).mk 
+include $(MAK_PATH)/$(call GET_COMPILER).mk 
 
 ifeq ($(BLD_TYPE),debug)
 #CFLAGS += $(if $(BLD_OPTOMISE),-O$(BLD_OPTOMISE),-O0)
@@ -61,14 +61,15 @@ endif
 
 ODFLAGS += -h -S
 
+ifneq ($(BLD_TYPE),lint)
 ALL_TARGETS += $(BLD_OUTPUT)/$(BLD_TARGET).lss
-
+endif
 endif
 
 #-----------------------------------------------------------------------------
 ifeq ($(INC_PART),middle)
 # After generic targets 
-include $(MAK_PATH)/$(COMPILER).mk 
+include $(MAK_PATH)/$(call GET_COMPILER).mk 
 
 endif
 
@@ -86,6 +87,6 @@ endif
 endif
 LFLAGS += -T$(LNK_SCR) -nostartfiles 
 
-include $(MAK_PATH)/$(COMPILER).mk 
+include $(MAK_PATH)/$(call GET_COMPILER).mk 
 
 endif

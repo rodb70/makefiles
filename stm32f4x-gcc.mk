@@ -39,7 +39,7 @@ endif
 
 #-----------------------------------------------------------------------------
 ifeq ($(INC_PART),upper)
-include $(MAK_PATH)/$(COMPILER).mk 
+include $(MAK_PATH)/$(call GET_COMPILER).mk 
 
 ifeq ($(BLD_TYPE),debug)
 else
@@ -65,14 +65,15 @@ endif
 
 ODFLAGS += -h -S
 
+ifneq ($(BLD_TYPE),lint)
 ALL_TARGETS += $(BLD_OUTPUT)/$(BLD_TARGET).lss
-
+endif
 endif
 
 #-----------------------------------------------------------------------------
 ifeq ($(INC_PART),middle)
 # After generic targets 
-include $(MAK_PATH)/$(COMPILER).mk 
+include $(MAK_PATH)/$(call GET_COMPILER).mk 
 
 endif
 
@@ -86,6 +87,6 @@ LNK_SCR := source/cpu/stm32f4x/startup/stm32f401ce_flash.ld
 endif
 LFLAGS += -T$(LNK_SCR) -nostartfiles 
 
-include $(MAK_PATH)/$(COMPILER).mk 
+include $(MAK_PATH)/$(call GET_COMPILER).mk 
 
 endif

@@ -34,7 +34,7 @@ EMPTY :=
 SPACE := $(EMPTY) $(EMPTY)
 COMMA := $(EMPTY),$(EMPTY)
 
-BLD_TYPE_LIST := debug release test clean
+BLD_TYPE_LIST := debug release test clean lint
 
 __get_word=$(word $(1),$(2))
 GET_BUILD=$(call __get_word,1,$(subst _, ,$(1)))
@@ -128,8 +128,15 @@ TOLOWERCASE = $(subst A,a,$(subst B,b,$(subst C,c,$(subst D,d,$(subst E,e,$(subs
 # Convert to Upper case
 TOUPPERCASE = $(subst a,A,$(subst b,B,$(subst c,C,$(subst d,D,$(subst e,E,$(subst f,F,$(subst g,G,$(subst h,H,$(subst i,I,$(subst j,J,$(subst k,K,$(subst l,L,$(subst m,M,$(subst n,N,$(subst o,O,$(subst p,P,$(subst q,Q,$(subst r,R,$(subst s,S,$(subst t,T,$(subst u,U,$(subst v,V,$(subst w,W,$(subst x,X,$(subst y,Y,$(subst z,Z,$1))))))))))))))))))))))))))
 
+#-----------------------------------------------------------------------------
+# Search for object in application path
+# 1 - execautable to search for
+PATHSEARCH = $(firstword $(wildcard $(addsuffix /$(1),$(subst :, ,$(PATH)))))
+
+GET_COMPILER = $(if $(subst lint,,$(BLD_TYPE)),$(COMPILER),lint)
+
 #------------------------------------------------------------------------------
-# FIgure out host architecture
+# Figure out host architecture
 HOSTARCH := $(call TOLOWERCASE,$(shell uname -s))
 ifeq ($(HOSTARCH),)
 HOSTARCH := $(strip $(firstword $(subst _, ,$(OS))))
