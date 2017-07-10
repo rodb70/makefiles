@@ -43,6 +43,18 @@ ifeq ($(INC_PART),upper)
 # Before target defines
 
 LINT_CC := gcc
+# Define for a different output
+ifndef LINT_ENV
+LINT_ENV := env-gcc.lnt
+endif
+ifndef LINT_STD
+LINT_STD := std.lnt
+endif
+# Define for a different standard lint path
+ifndef LINT_SOURCE
+LINT_SOURCE := source/lint
+endif
+
 $(if $(call PATHSEARCH,$(LINT_CC)),,$(error gcc not found cannot preprocess code))
 
 # Script file to run lint
@@ -167,7 +179,7 @@ $(BLD_OUTPUT)/$(BLD_TARGET).pp: $($(BLD_TARGET)-bldeps)
 	$(LINT_CC)  -E $(CFLAGS) $(CXXFLAGS) $^ > $@
 
 $(BLD_OUTPUT)/flint_done: $(BLD_OUTPUT)/size-options.lnt $($(BLD_TARGET)-bldeps)
-	$(LINT_EXE) -i$(BLD_OUTPUT) -isource/lint std.lnt env-gcc.lnt -u -b $(addprefix -i,$(INC)) $(filter-out %.lnt,$^)
+	$(LINT_EXE) -i$(BLD_OUTPUT) -i$(LINT_SOURCE) $(LINT_STD) $(LINT_ENV) -u -b $(addprefix -i,$(INC)) $(filter-out %.lnt,$^)
 #	awk -f unique.awk flint.err > flint_unique.err
 	
 #end of lower
