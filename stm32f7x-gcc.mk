@@ -84,7 +84,7 @@ ifeq ($(INC_PART),lower)
 # If not linker script defined use the default
 ifeq ($(LNK_SCR),)
 # only set this here if not already set this means this can be overriden
-$(error LNK_SCR := source/cpu/stm32f7x/startup/stm32f401ce_flash.ld)
+LNK_SCR := source/cpu/stm32f7x/startup/stm32f767zitx_flash.ld
 endif
 LFLAGS += -T$(LNK_SCR) -nostartfiles 
 
