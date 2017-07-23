@@ -157,19 +157,19 @@ $(foreach lib,$(LIB-app),$(eval $(call GEN_LIBS,$(lib))))
 $(BLD_OUTPUT)/%.o: %.c $(sort $(MAKEFILE_LIST)) $(PRE_TARGETS)
 	@echo "C         : $(notdir $<)" $(NOOUT)
 	$(call IF_NOT_EXIST_MKDIR,$(@D))
-	$(CC) $(CFLAGS) -Wa,-adhlns="$(@:%.o=%.lst)" -MMD -MP -MF $(@:%.o=%.d) -MT $(@) -c $< -o $@
+	$(CC) -c $< $(CFLAGS) -Wa,-adhlns="$(@:%.o=%.lst)" -MMD -MP -MF $(@:%.o=%.d) -MT $(@) -o $@
 
 # Build an object file from a C++ file
 $(BLD_OUTPUT)/%.o: %.cpp $(sort $(MAKEFILE_LIST)) $(PRE_TARGETS)
 	@echo "C++       : $(notdir $<)" $(NOOUT)
 	$(call IF_NOT_EXIST_MKDIR,$(@D))
-	$(CXX) $(CXXFLAGS) -Wa,-adhlns="$(@:%.o=%.lst)" -MMD -MP -MF $(@:%.o=%.d) -MT $(@) -c $< -o $@
+	$(CXX) -c $< $(CXXFLAGS) -Wa,-adhlns="$(@:%.o=%.lst)" -MMD -MP -MF $(@:%.o=%.d) -MT $(@) -o $@
 
 # Build an object file from a C++ file
 $(BLD_OUTPUT)/%.o: %.cc $(sort $(MAKEFILE_LIST)) $(PRE_TARGETS)
 	@echo "C++       : $(notdir $<)" $(NOOUT)
 	$(call IF_NOT_EXIST_MKDIR,$(@D))
-	$(CXX) $(CXXFLAGS) -Wa,-adhlns="$(@:%.o=%.lst)" -MMD -MP -MF $(@:%.o=%.d) -MT $(@) -c $< -o $@
+	$(CXX) -c $< $(CXXFLAGS) -Wa,-adhlns="$(@:%.o=%.lst)" -MMD -MP -MF $(@:%.o=%.d) -MT $(@) -o $@
 
 # Build an object file from an assembly file filtering through the C pre-processor
 $(BLD_OUTPUT)/%.o: %.S $(sort $(MAKEFILE_LIST)) $(PRE_TARGETS)
@@ -186,14 +186,14 @@ $(BLD_TARGET)-bldeps += $(addprefix $(BLD_OUTPUT)/,$(patsubst %.cc,%.o, $(filter
 $(BLD_TARGET)-bldeps += $(addprefix $(BLD_OUTPUT)/,$(filter %$(LIB_SUFFIX),$(SRC-app)))
 
 # Link an elf file from the list of object files
-$(BLD_OUTPUT)/$(BLD_TARGET).elf: $($(BLD_TARGET)-bldeps) 
+$(BLD_OUTPUT)/$(BLD_TARGET).elf: $(LNK_SCR) $($(BLD_TARGET)-bldeps) 
 	@echo "Link elf  : $@" $(NOOUT)
-	$(CC) -Wl,-gc-sections -Wl,-Map,$(@:%.elf=%.map),--cref $(LFLAGS) -Wl,--start-group $^ $(EXTRA_LIBS) -Wl,--end-group -o $@
+	$(CC) -o $@ -Wl,-gc-sections -Wl,-Map,$(@:%.elf=%.map),--cref $(LFLAGS) -Wl,--start-group $(if $(LNK_SCR),$(subst $<,,$^),$^) $(EXTRA_LIBS) -Wl,--end-group
 
 # Link an exe from build objects (used for the test target mostly)
 $(BLD_OUTPUT)/$(BLD_TARGET): $($(BLD_TARGET)-bldeps)
 	@echo "Link  app : $@" $(NOOUT)
-	$(CXX) -Xlinker --gc-sections -Wl,-Map,$@.map $(LFLAGS) -Wl,--start-group $^ $(EXTRA_LIBS) -Wl,--end-group -o $@
+	$(CXX) -o $@ -Xlinker --gc-sections -Wl,-Map,$@.map $(LFLAGS) -Wl,--start-group $(if $(LNK_SCR),$(subst $<,,$^),$^) $(EXTRA_LIBS) -Wl,--end-group
 
 # end of lower
 endif
