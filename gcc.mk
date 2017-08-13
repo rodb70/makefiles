@@ -191,7 +191,7 @@ $(BLD_OUTPUT)/$(BLD_TARGET).elf: $(LNK_SCR) $($(BLD_TARGET)-bldeps)
 	$(CC) -o $@ -Wl,-gc-sections -Wl,-Map,$(@:%.elf=%.map),--cref $(LFLAGS) -Wl,--start-group $(if $(LNK_SCR),$(subst $<,,$^),$^) $(EXTRA_LIBS) -Wl,--end-group
 
 # Link an exe from build objects (used for the test target mostly)
-$(BLD_OUTPUT)/$(BLD_TARGET): $($(BLD_TARGET)-bldeps)
+$(BLD_OUTPUT)/$(BLD_TARGET): $(LNK_SCR) $($(BLD_TARGET)-bldeps)
 	@echo "Link  app : $@" $(NOOUT)
 	$(CXX) -o $@ -Xlinker --gc-sections -Wl,-Map,$@.map $(LFLAGS) -Wl,--start-group $(if $(LNK_SCR),$(subst $<,,$^),$^) $(EXTRA_LIBS) -Wl,--end-group
 
