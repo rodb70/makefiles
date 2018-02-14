@@ -65,7 +65,7 @@ endif
 # C standard to compile aganist 
 CFLAGS += -std=gnu99
 # C++ standard to compile against
-CXXFLAGS += -std=gnu++98
+CXXFLAGS += -std=gnu++11
 #CXXFLAGS += -std=gnu++0x
 CXXFLAGS += -Wno-long-long
 

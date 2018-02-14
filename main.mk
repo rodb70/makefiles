@@ -254,4 +254,3 @@ DEP-SRC := $(addprefix $(BLD_OUTPUT)/,$(DEP-SRC))
 DEP-SRC := $(strip $(DEP-SRC))
 -include $(DEP-SRC)
 
-.ONESHELL:
