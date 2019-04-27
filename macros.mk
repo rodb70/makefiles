@@ -46,6 +46,13 @@ GET_TARGET=$(call __get_word,3,$(subst _, ,$(1)))
 IS_DEBUG=$(if $(findstring $(1),debug test),y,n)
 
 #-----------------------------------------------------------------------------
+# Create make variable
+# $1 - base name of variable
+# $2 - prefix
+# $3 - content for new variable
+PASS_FLAGS=$(2)-$(1) := $(3)
+
+#-----------------------------------------------------------------------------
 # Given a directory open the makefile.mk file and read the contents
 # $1 - path to source
 define MK_PROJECT
@@ -73,6 +80,10 @@ sub := -$$(LIB)
 SRC-app += $$(strip $(LIB_PREFIX)$$(LIB)$(LIB_SUFFIX))
 LIB-app += $$(strip $$(LIB))
 SRC$$(sub) := $$(strip $$(SRC$$(sub)))
+$$(if $$(CFLAGS-$$(LIB)),$$(foreach sf,$$(CSRC),$$(eval $$(call PASS_FLAGS,$$(sf),CFLAGS,$$(CFLAGS-$$(LIB))))))
+$$(if $$(AFLAGS-$$(LIB)),$$(foreach sf,$$(ASRC),$$(eval $$(call PASS_FLAGS,$$(sf),AFLAGS,$$(AFLAGS-$$(LIB))))))
+$$(if $$(CXXFLAGS-$$(LIB)),$$(foreach sf,$$(CXXSRC),$$(eval $$(call PASS_FLAGS,$$(sf),CXXFLAGS,$$(CXXFLAGS-$$(LIB))))))
+$$(if $$(COMFLAGS-$$(LIB)),$$(foreach sf,$$(CSRC) $$(CXXSRC),$$(eval $$(call PASS_FLAGS,$$(sf),COMFLAGS,$$(COMFLAGS-$$(LIB))))))
 endif # lib
 SRC$$(sub) += $$(strip $$(addprefix $(1)/,$$(strip $$(ASRC) $$(CSRC) $$(CXXSRC))))
 ifeq ($$(ADD_TO_INC_PATH),y)

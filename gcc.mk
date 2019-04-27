@@ -157,7 +157,7 @@ $(foreach lib,$(LIB-app),$(eval $(call GEN_LIBS,$(lib))))
 $(BLD_OUTPUT)/%.o: %.c $(sort $(MAKEFILE_LIST)) $(PRE_TARGETS)
 	@echo "C         : $(notdir $<)" $(NOOUT)
 	$(call IF_NOT_EXIST_MKDIR,$(@D))
-	$(CC) -c $< $(CFLAGS) -Wa,-adhlns="$(@:%.o=%.lst)" -MMD -MP -MF $(@:%.o=%.d) -MT $(@) -o $@
+	$(CC) -c $< $(CFLAGS) $(CFLAGS-$(<F)) -Wa,-adhlns="$(@:%.o=%.lst)" -MMD -MP -MF $(@:%.o=%.d) -MT $(@) -o $@
 
 # Build an object file from a C++ file
 $(BLD_OUTPUT)/%.o: %.cpp $(sort $(MAKEFILE_LIST)) $(PRE_TARGETS)
