@@ -163,7 +163,7 @@ $(BLD_OUTPUT)/size-options.lnt: $(BLD_OUTPUT)/lint_cmac.h
 # Bottom of the make file stuff
 $(BLD_OUTPUT)/$(BLD_TARGET): $(sort $(MAKEFILE_LIST)) $(PRE_TARGETS) $(BLD_OUTPUT)/flint_done
 
-$(foreach lib,$(LIB-app),$(eval $(call GEN_LIBS,$(lib))))
+$(foreach lib,$(LIB-app),$(eval $(call GEN_SRC_LIST,$(lib))))
 $(BLD_TARGET)-bldeps :=
 $(BLD_TARGET)-bldeps += $(filter %.c,$(SRC-app))
 $(BLD_TARGET)-bldeps += $(filter %.cpp,$(SRC-app))
