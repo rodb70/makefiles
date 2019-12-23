@@ -52,7 +52,7 @@ CFLAGS += -mcpu=arm7tdmi
 
 LFLAGS += -mcpu=arm7tdmi
 ifeq ($(filter specs,$(LFLAGS)),)
-LFLAGS += --specs=nano.specs
+LFLAGS += --specs=nosys.specs
 endif
 
 ODFLAGS += -h -S
