@@ -51,7 +51,7 @@ CFLAGS += -mcpu=arm7tdmi
 
 
 LFLAGS += -mcpu=arm7tdmi
-ifeq ($(filter specs,$(LFLAGS)),)
+ifeq ($(filter --specs%,$(LFLAGS)),)
 LFLAGS += --specs=nosys.specs
 endif
 
