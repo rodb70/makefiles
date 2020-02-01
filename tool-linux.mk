@@ -1,9 +1,9 @@
 #-----------------------------------------------------------------------------
-# This is the makefile compiler or cpu target template.  There are 3 parts to 
+# This is the makefile compiler or cpu target template.  There are 3 parts to
 # this template.  Each file is included 3 times and the INC_PART variable is set
-# to upper, middle, lower as needed    
+# to upper, middle, lower as needed
 # upper:
-# This is here CPU or compiler specific make defines CFLAGS, AFLAGS, LFLAGS 
+# This is here CPU or compiler specific make defines CFLAGS, AFLAGS, LFLAGS
 # and any other CPU or compiler specific defines are declared here.
 #
 # middle:
@@ -49,7 +49,7 @@ endif
 
 #-----------------------------------------------------------------------------
 ifeq ($(INC_PART),middle)
-# After generic targets 
+# After generic targets
 
 # end of middle
 endif

@@ -38,8 +38,9 @@ BLD_TYPE_LIST := debug release test clean lint
 
 __get_word=$(word $(1),$(2))
 GET_BUILD=$(call __get_word,1,$(subst _, ,$(1)))
-GET_CPU_RAW=$(call __get_word,2,$(subst _, ,$(1)))
+GET_CPU_RAW=$(call __get_word,1,$(subst ., ,$(call __get_word,2,$(subst _, ,$(1)))))
 GET_CPU=$(if $(CPU_LIST),$(filter $(call GET_CPU_RAW,$(1)),$(CPU_LIST)),$(call GET_CPU_RAW,$(1)))
+GET_CPUEXT=$(call __get_word,2,$(subst ., ,$(call __get_word,2,$(subst _, ,$(1)))))
 GET_TARGET=$(call __get_word,3,$(subst _, ,$(1)))
 
 # test if build type wants debug added to build
@@ -98,7 +99,7 @@ endef
 # Basically check if there are 3 parts to the target.
 #
 # $1 - target to test
-__target_test=$(words $(subst _, ,$(1))) 
+__target_test=$(words $(subst _, ,$(1)))
 
 #-----------------------------------------------------------------------------
 # Make an override target if passed to the command line 
@@ -110,12 +111,13 @@ $$(error TARGET_OVERRIDE already set you can only have 1)
 endif
 BLD_TYPE := $$(call GET_BUILD,$(1))
 CPU := $$(call GET_CPU,$(1))
+BLD_CPUEXT := $$(call GET_CPUEXT,$(1))
 BLD_TARGET := $$(call GET_TARGET,$(1))
 .PHONY: $$(BLD_TYPE)_$$(CPU)_$$(BLD_TARGET)
 ifneq ($$(BLD_TYPE),clean)
-$$(BLD_TYPE)_$$(CPU)_$$(BLD_TARGET): all
+$$(BLD_TYPE)_$$(CPU)$$(if $$(BLD_CPUEXT),.$$(BLD_CPUEXT))_$$(BLD_TARGET): all
 else
-$$(BLD_TYPE)_$$(CPU)_$$(BLD_TARGET): clean
+$$(BLD_TYPE)_$$(CPU)$$(if $$(BLD_CPUEXT),.$$(BLD_CPUEXT))_$$(BLD_TARGET): clean
 endif
 TARGET_OVERRIDE := y
 endif 
@@ -168,7 +170,7 @@ $(1) := ./$(BLD_OUTPUT)/bin/$(1)
 $$($(1)): $$(addprefix $$(BLD_OUTPUT)/,$$($(1)-src:.c=.o))
 	@echo "Host build: $$(notdir $$@)" $$(NOOUT)
 	$$(call IF_NOT_EXIST_MKDIR,$$(@D))
-	$(HOSTCC) $(HOSTLFLAGS) -Wl,-Map,$$@.map -Wl,--start-group $$^ $$(TOOL_LIBS) -Wl,--end-group -o $$@ 
+	$(HOSTCC) $(HOSTLFLAGS) -Wl,-Map,$$@.map -Wl,--start-group $$^ $$(TOOL_LIBS) -Wl,--end-group -o $$@
 
 endef
 

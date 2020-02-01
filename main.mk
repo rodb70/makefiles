@@ -1,14 +1,14 @@
 #-----------------------------------------------------------------------------
 # This is the main makefile
 # 
-# Entry system to the embedded makefile build system.  This build system is able 
-# to host multi targets and use multi tool chains.  Tool chain build recpies 
-# are handled in by make file fragments under the makefiles directory.  The 
-# current convention is to start with a CPU architecture and then a compiler 
-# name.  For example stm32-gcc - is the ST STM32 cortex M3 family with gcc as 
-# the compiler.  Since gcc is a common architecture there is a gcc makefile 
-# fragment that is extended by the specific stm32-gcc fragment.  The goal of 
-# this is to create an eaisly retargetable build system that is done once and 
+# Entry system to the embedded makefile build system.  This build system is able
+# to host multi targets and use multi tool chains.  Tool chain build recpies
+# are handled in by make file fragments under the makefiles directory.  The
+# current convention is to start with a CPU architecture and then a compiler
+# name.  For example stm32-gcc - is the ST STM32 cortex M3 family with gcc as
+# the compiler.  Since gcc is a common architecture there is a gcc makefile
+# fragment that is extended by the specific stm32-gcc fragment.  The goal of
+# this is to create an eaisly retargetable build system that is done once and
 # easy to extend.
 # This system also makes is easy to make an overriden build like a relese build
 # or a test build.
@@ -33,15 +33,15 @@
 # modification, are permitted provided that the following conditions are met:
 # * Redistributions of source code must retain the above copyright notice, this
 #   list of conditions and the following disclaimer.
-# * Redistributions in binary form must reproduce the above copyright notice, 
-#   this list of conditions and the following disclaimer in the documentation 
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
 #   and/or other materials provided with the distribution.
-# * Neither the name of the Team Boyce Limited nor the names of its contributors 
-#   may be used to endorse or promote products derived from this software 
+# * Neither the name of the Team Boyce Limited nor the names of its contributors
+#   may be used to endorse or promote products derived from this software
 #   without specific prior written permission.
 #
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
-# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
 # ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
 # LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
@@ -73,8 +73,8 @@ include $(MAK_PATH)/macros.mk
 # GCONV_ENABLED := n
 # PROJ_DIRS - project directory that are included in to the makefile system
 PROJ_DIRS := $(PROJ_DIRS)
-# CPU - is the name of the CPU being used this must be set for a build to 
-# occure but can be set in a system dir makefile 
+# CPU - is the name of the CPU being used this must be set for a build to
+# occure but can be set in a system dir makefile
 CPU := $(call TOLOWERCASE,$(CPU))
 # COMPILER - is the name of the compiler being used.  again this can be set in
 # top level make file or at the system dir level makefile
@@ -84,12 +84,12 @@ BLD_OPTOMISE := $(call TOLOWERCASE,$(BLD_OPTOMISE))
 # BLD_TYPE - this is the type of build that is going to occur.  Either debug,
 # release, test or what every else is defined
 BLD_TYPE :=  $(call TOLOWERCASE,$(BLD_TYPE))
-# BLD_MODEL where used the tool chain build model to use. Generally would be one of 
+# BLD_MODEL where used the tool chain build model to use. Generally would be one of
 # either small, medium or large but this is tool chain specific
 BLD_MODEL := $(call TOLOWERCASE,$(BLD_MODEL))
 # BLD_TARGET - name of the target being built.  This is ususlly the application
 # name.  This is also used to open a system dir makefile to allow for multi
-# targets to be built in one build system.   
+# targets to be built in one build system.
 BLD_TARGET :=  $(call TOLOWERCASE,$(BLD_TARGET))
 # COMFLAGS - flags common to all types of build
 COMFLAGS := $(COMFLAGS)
@@ -110,7 +110,7 @@ SZFLAGS := $(SZFLAGS)
 # LFLAGS - linker flags used in the makefile system
 LFLAGS := $(LFLAGS)
 # SRC-app - this is the variable that stores source files that are linked
-# directly to the target insteat of being built into a library.  This is an 
+# directly to the target insteat of being built into a library.  This is an
 # internal to the makefile system variable
 SRC-app := $(CXXSRC) $(CSRC) $(ASRC)
 # LIB-app - list of library names linked into the target
@@ -121,12 +121,12 @@ INC := $(INC)
 TINC := $(TINC)
 # DEP-SRC - source files included as dependencies
 DEP-SRC :=
-# TARGET_OVERRIDE - Used to override the default target to something else in 
+# TARGET_OVERRIDE - Used to override the default target to something else in
 # the build system
 TARGET_OVERRIDE := n
 # TOOLS - List of tools that the build system uses
 TOOLS := $(TOOLS)
-# List of extra targets to be made when the all target is execauted.  (Add in 
+# List of extra targets to be made when the all target is execauted.  (Add in
 # the upper section of the .mk includes files)
 ALL_TARGETS := $(ALL_TARGETS)
 # List of targets that are required before making the main binary
@@ -140,7 +140,8 @@ EXTRA_MACROS := $(EXTRA_MACROS)
 
 #-----------------------------------------------------------------------------
 # Check an create target override if needed
-$(foreach goal,$(MAKECMDGOALS),$(eval $(call MK_OVERRIDE_TARGET,$(goal)))) 
+$(foreach goal,$(MAKECMDGOALS),$(eval $(call MK_OVERRIDE_TARGET,$(goal))))
+
 # Set the outout path
 BLD_OUTPUT := $(BLD_OUTDIR)/$(BLD_TARGET)/$(CPU)-$(BLD_TYPE)
 # Include systems makefile if exists
@@ -166,13 +167,13 @@ COMPILER := $(if $($(call TOUPPERCASE,$(CPU))_COMPILER),$($(call TOUPPERCASE,$(C
 endif
 ifeq ($(BLD_TYPE),debug)
 # Add debug specific global flags here
-#AFLAGS += 
-#CFLAGS += 
-#CXXFLAGS += 
+#AFLAGS +=
+#CFLAGS +=
+#CXXFLAGS +=
 endif
 ifeq ($(BLD_TYPE),release)
 # Add release specific global flags here
-#AFLAGS += 
+#AFLAGS +=
 # Switch off asserts
 CFLAGS += -DNDEBUG
 CXXFLAGS += -DNDEBUG
@@ -183,8 +184,8 @@ endif
 COMFLAGS += $(if $(CPU),-D$(call TOUPPERCASE,$(CPU))=1)
 COMFLAGS += $(if $(BOARD),-D$(call TOUPPERCASE,$(BOARD))=1)
 
-include $(MAK_PATH)/$(CPU)-$(COMPILER).mk 
-include $(MAK_PATH)/tool-$(HOSTARCH).mk 
+include $(MAK_PATH)/$(CPU)-$(COMPILER).mk
+include $(MAK_PATH)/tool-$(HOSTARCH).mk
 
 
 # New improved verbose mode
@@ -206,11 +207,11 @@ clean :
 
 #-----------------------------------------------------------------------------
 INC_PART := middle
-include $(MAK_PATH)/macros.mk 
-include $(MAK_PATH)/$(CPU)-$(COMPILER).mk 
-include $(MAK_PATH)/tool-$(HOSTARCH).mk 
+include $(MAK_PATH)/macros.mk
+include $(MAK_PATH)/$(CPU)-$(COMPILER).mk
+include $(MAK_PATH)/tool-$(HOSTARCH).mk
 
-# Add global include path at the end of all other files 
+# Add global include path at the end of all other files
 ifneq ($(wildcard $(SRC_PATH)/include),)
 PROJ_DIRS += $(SRC_PATH)/include
 endif
@@ -233,9 +234,9 @@ CXXFLAGS += $(addprefix -I ,$(INC))
 CPPFLAGS += $(addprefix -I ,$(INC))
 HOSTCFLAGS += $(addprefix -I ,$(TINC))
 
-include $(MAK_PATH)/macros.mk 
-include $(MAK_PATH)/$(CPU)-$(COMPILER).mk 
-include $(MAK_PATH)/tool-$(HOSTARCH).mk 
+include $(MAK_PATH)/macros.mk
+include $(MAK_PATH)/$(CPU)-$(COMPILER).mk
+include $(MAK_PATH)/tool-$(HOSTARCH).mk
 
 $(foreach macro,$(EXTRA_MACROS),$(eval $(call $(macro))))
 

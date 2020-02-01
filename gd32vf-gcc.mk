@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------------------
-# Makefile bits for the 32-bit RISCV chip using gcc as the compiler
+# Makefile bits for the FE300 chip using gcc as the compiler
 #-License----------------------------------------------------------------------
 #Copyright (c) 2011, developer@teamboyce.com
 #All rights reserved.
@@ -27,66 +27,6 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-#-----------------------------------------------------------------------------
-# Cross compile prefix for gcc
-ifeq ($(CROSS_COMPILE),)
-CROSS_COMPILE := /opt/riscv/bin/riscv-none-embed-
-endif
-# Target suffix set here if not already set
-ifeq ($(TARGET_SUFFIX),)
-TARGET_SUFFIX := .bin
-endif
+RV32_ARCH := rv32imac
 
-#-----------------------------------------------------------------------------
-ifeq ($(INC_PART),upper)
-include $(MAK_PATH)/$(call GET_COMPILER).mk 
-
-CFLAGS += $(if $(BLD_OPTOMISE),-O$(BLD_OPTOMISE),-Os)
-
-AFLAGS += -march=$(RV32_ARCH)
-AFLAGS += -mabi=ilp32
-AFLAGS += -msmall-data-limit=8
-
-COMFLAGS += -march=$(RV32_ARCH)
-COMFLAGS += -mabi=ilp32
-COMFLAGS += -msmall-data-limit=8
-COMFLAGS += -nostartfiles -nodefaultlibs -nostdlib 
-COMFLAGS += -Wno-strict-prototypes
-
-LFLAGS += -march=$(RV32_ARCH)
-LFLAGS += -mabi=ilp32
-LFLAGS += -msmall-data-limit=8
-LFLAGS += -nodefaultlibs -nostdlib 
-
-ifeq ($(filter specs,$(LFLAGS)),)
-LFLAGS += --specs=nano.specs
-endif
-
-ODFLAGS += -hw -S
-
-ifneq ($(BLD_TYPE),lint)
-ALL_TARGETS += $(BLD_OUTPUT)/$(BLD_TARGET).lss
-endif
-endif
-
-#-----------------------------------------------------------------------------
-ifeq ($(INC_PART),middle)
-# After generic targets 
-include $(MAK_PATH)/$(call GET_COMPILER).mk 
-
-endif
-
-#-----------------------------------------------------------------------------
-ifeq ($(INC_PART),lower)
-
-# If not linker script error
-ifeq ($(LNK_SCR),)
-# Error here if linker script not set
-$(error No link script for cpu=$(CPU))
-endif
-
-LFLAGS += -T$(LNK_SCR) -nostartfiles 
-
-include $(MAK_PATH)/$(call GET_COMPILER).mk 
-
-endif
+include $(MAK_PATH)/rv32-gcc.mk

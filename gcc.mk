@@ -39,11 +39,13 @@ COMFLAGS += -ffunction-sections
 COMFLAGS += -fdata-sections 
 
 # Very tight error checking
-COMFLAGS += -pedantic 
-COMFLAGS += -pedantic-errors 
-COMFLAGS += -Werror 
-COMFLAGS += -Wall 
-COMFLAGS += -Wextra 
+ifneq ($(PEDANDIC),n)
+COMFLAGS += -pedantic
+COMFLAGS += -pedantic-errors
+endif
+COMFLAGS += -Werror
+COMFLAGS += -Wall
+COMFLAGS += -Wextra
 COMFLAGS += -fstrict-overflow
 
 COMFLAGS += -Wno-strict-aliasing
@@ -62,7 +64,7 @@ ifneq ($(SHORT_ENUMS),n)
 COMFLAGS += -fshort-enums
 endif
 
-# C standard to compile aganist 
+# C standard to compile aganist
 CFLAGS += -std=gnu99
 # C++ standard to compile against
 CXXFLAGS += -std=gnu++11
@@ -99,7 +101,7 @@ LIB_SUFFIX := .a
 
 # Used to only have one library declaration
 LIBRARY_LIST :=
-# Macro to generate library build rules 
+# Macro to generate library build rules
 define GEN_LIBS
 ifeq ($(findstring $(1),$(LIBRARY_LIST)),)
 LIBRARY_LIST += $(1)
@@ -119,7 +121,7 @@ endif
 
 #-----------------------------------------------------------------------------
 ifeq ($(INC_PART),middle)
-# After generic targets 
+# After generic targets
 # Create a library target
 
 # End of middle
@@ -186,7 +188,7 @@ $(BLD_TARGET)-bldeps += $(addprefix $(BLD_OUTPUT)/,$(patsubst %.cc,%.o, $(filter
 $(BLD_TARGET)-bldeps += $(addprefix $(BLD_OUTPUT)/,$(filter %$(LIB_SUFFIX),$(SRC-app)))
 
 # Link an elf file from the list of object files
-$(BLD_OUTPUT)/$(BLD_TARGET).elf: $(LNK_SCR) $($(BLD_TARGET)-bldeps) 
+$(BLD_OUTPUT)/$(BLD_TARGET).elf: $(LNK_SCR) $($(BLD_TARGET)-bldeps)
 	@echo "Link elf  : $@" $(NOOUT)
 	$(CC) -o $@ -Wl,-gc-sections -Wl,-Map,$(@:%.elf=%.map),--cref $(LFLAGS) -Wl,--start-group $(if $(LNK_SCR),$(subst $<,,$^),$^) $(EXTRA_LIBS) -Wl,--end-group
 

@@ -8,15 +8,15 @@
 # modification, are permitted provided that the following conditions are met:
 # * Redistributions of source code must retain the above copyright notice, this
 #   list of conditions and the following disclaimer.
-# * Redistributions in binary form must reproduce the above copyright notice, 
-#   this list of conditions and the following disclaimer in the documentation 
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
 #   and/or other materials provided with the distribution.
-# * Neither the name of the Team Boyce Limited nor the names of its contributors 
-#   may be used to endorse or promote products derived from this software 
+# * Neither the name of the Team Boyce Limited nor the names of its contributors
+#   may be used to endorse or promote products derived from this software
 #   without specific prior written permission.
 #
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
-# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
 # ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
 # LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
@@ -87,7 +87,7 @@ LIB_SUFFIX := .lib
 
 # Used to only have one library declaration
 LIBRARY_LIST :=
-# Macro to generate library build rules 
+# Macro to generate library build rules
 define GEN_LIBS
 ifeq ($(findstring $(1),$(LIBRARY_LIST)),)
 LIBRARY_LIST += $(1)
@@ -140,7 +140,7 @@ $(BLD_OUTPUT)/%.rel: %.c $(sort $(MAKEFILE_LIST)) $(PRE_TARGETS)
 	$(CC) -c $(CFLAGS) $< -o $@
 
 ifneq ($(filter -mmcs51,$(CFLAGS)),)
-# 8051 specific assembler implcidit rule 
+# 8051 specific assembler implcidit rule
 $(BLD_OUTPUT)/%.rel: %.asm $(sort $(MAKEFILE_LIST)) $(PRE_TARGETS)
 	@echo "Assembling: $(notdir $<)" $(NOOUT)
 	$(call IF_NOT_EXIST_MKDIR,$(@D))
@@ -161,7 +161,7 @@ $(BLD_TARGET)-bldeps += $(addprefix $(BLD_OUTPUT)/,$(patsubst %.asm,%.rel, $(fil
 $(BLD_TARGET)-bldeps += $(addprefix $(BLD_OUTPUT)/,$(patsubst %.c,%.rel, $(filter %.c,$(SRC-app))))
 $(BLD_TARGET)-bldeps += $(addprefix $(BLD_OUTPUT)/,$(filter %$(LIB_SUFFIX),$(SRC-app)))
 
-$(BLD_OUTPUT)/$(BLD_TARGET).ihx: $($(BLD_TARGET)-bldeps) 
+$(BLD_OUTPUT)/$(BLD_TARGET).ihx: $($(BLD_TARGET)-bldeps)
 	@echo "Linking   : $(notdir $@)" $(NOOUT)
 	$(CC) $(LFLAGS) $^ -o $@
 
