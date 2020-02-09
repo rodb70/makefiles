@@ -52,7 +52,7 @@ CPP := $(__sdccCross)sdcpp
 # AS assemblers
 AS8051 := $(__sdccCross)asx8051
 ASGB80 := $(__sdccCross)as-gbz80
-ASZ80  := $(__sdccCross)as-z80
+ASZ80  := $(__sdccCross)sdasz80
 # Librarian
 AR := $(__sdccCross)sdcclib
 # makebin
@@ -60,6 +60,7 @@ MKBIN := $(__sdccCross)makebin
 # packhex command
 PKHX := $(__sdccCSross)packihx
 
+ifneq ($(filter -mmcs51,$(CFLAGS)),)
 # Sort out BLD_MODEL
 ifeq ($(call TOLOWERCASE,$(BLD_MODEL)),large)
 TARGET_MODEL := --model-large
@@ -74,11 +75,14 @@ endif
 ifeq ($(TARGET_MODEL),)
 $(error BLD_MODEL not set correctly should be small, medium or large) 
 endif
+endif
 # Target suffix
 TARGET_SUFFIX := .hex
 
 ifeq ($(BLD_TYPE),debug)
 CFLAGS += --debug
+LFLAGS += --debug
+ADEBUG += -y
 endif
 CFLAGS += --Werror
 
@@ -92,9 +96,7 @@ define GEN_LIBS
 ifeq ($(findstring $(1),$(LIBRARY_LIST)),)
 LIBRARY_LIST += $(1)
 $(1)-deps :=
-$(1)-deps += $$(addprefix $$(BLD_OUTPUT)/,$$(patsubst %.asm,%.rel, $$(filter %.S,$$(SRC-$(1)))))
-$(1)-deps += $$(addprefix $$(BLD_OUTPUT)/,$$(patsubst %.s,%.rel,$$(filter %.cpp,$$(SRC-$(1)))))
-$(1)-deps += $$(addprefix $$(BLD_OUTPUT)/,$$(patsubst %.S,%.rel,$$(filter %.cc,$$(SRC-$(1)))))
+$(1)-deps += $$(addprefix $$(BLD_OUTPUT)/,$$(patsubst %.asm,%.rel, $$(filter %.asm,$$(SRC-$(1)))))
 $(1)-deps += $$(addprefix $$(BLD_OUTPUT)/,$$(patsubst %.c,%.rel,$$(filter %.c,$$(SRC-$(1)))))
 $(BLD_OUTPUT)/$(LIB_PREFIX)$(1)$(LIB_SUFFIX): $$($(1)-deps)
 	@echo "Library   : $$(notdir $$@)" $(NOOUT)
@@ -145,7 +147,17 @@ $(BLD_OUTPUT)/%.rel: %.asm $(sort $(MAKEFILE_LIST)) $(PRE_TARGETS)
 	@echo "Assembling: $(notdir $<)" $(NOOUT)
 	$(call IF_NOT_EXIST_MKDIR,$(@D))
 	cp $< $(dir $@)
-	$(AS8051) -plosgff $(dir $@)/$<
+	$(AS8051) $(ADEBUG) -plosgff $(dir $@)/$<
+
+endif
+
+ifneq ($(filter -mz80,$(CFLAGS)),)
+# Z80 specific assembler implcidit rule
+$(BLD_OUTPUT)/%.rel: %.asm $(sort $(MAKEFILE_LIST)) $(PRE_TARGETS)
+	@echo "Assembling: $(notdir $<)" $(NOOUT)
+	$(call IF_NOT_EXIST_MKDIR,$(@D))
+	cp $< $(dir $@)
+	$(ASZ80) $(ADEBUG) -plosgffw $(dir $@)$(<F)
 
 endif
 
@@ -153,11 +165,11 @@ endif
 	@echo "Making    : $@" $(NOOUT)
 	$(PKHX) $^ > $@ 2> /dev/null
 	$(UNIX2DOS) $@ 2> /dev/null
-	tail -n 5 $(basename $@).mem
+	$(if $(filter -mmcs51,$(CFLAGS)),tail -n 5 $(basename $@).mem)
 
 $(BLD_TARGET)-bldeps :=
 $(BLD_TARGET)-bldeps += $(addprefix $(BLD_OUTPUT)/,$(patsubst %.c,%.rel,$(filter %.c,$(SRC_MAIN))))
-$(BLD_TARGET)-bldeps += $(addprefix $(BLD_OUTPUT)/,$(patsubst %.asm,%.rel, $(filter %.S,$(SRC-app))))
+$(BLD_TARGET)-bldeps += $(addprefix $(BLD_OUTPUT)/,$(patsubst %.asm,%.rel, $(filter %.asm,$(SRC-app))))
 $(BLD_TARGET)-bldeps += $(addprefix $(BLD_OUTPUT)/,$(patsubst %.c,%.rel, $(filter %.c,$(SRC-app))))
 $(BLD_TARGET)-bldeps += $(addprefix $(BLD_OUTPUT)/,$(filter %$(LIB_SUFFIX),$(SRC-app)))
 
