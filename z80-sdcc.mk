@@ -28,6 +28,11 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 #-----------------------------------------------------------------------------
+# Target suffix set here if not already set
+ifeq ($(TARGET_SUFFIX),)
+TARGET_SUFFIX := .com
+endif
+#$(warning TARGET_SUFFIX=|$(TARGET_SUFFIX)|)
 ifeq ($(INC_PART),upper)
 # Before target defines
 include $(MAK_PATH)/$(COMPILER).mk 
@@ -41,8 +46,12 @@ endif
 CFLAGS += -mz80
 
 LFLAGS += -mz80
+ifneq ($(SDCC_NO_CODE_LOC),y)
 LFLAGS += --code-loc $(if $(CODE_LOC),$(CODE_LOC),0)
+endif
+ifneq ($(SDCC_NO_DATA_LOC),y)
 LFLAGS += --data-loc $(if $(DATA_LOC),$(DATA_LOC),0x8000)
+endif
 
 # end of upper
 endif

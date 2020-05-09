@@ -77,7 +77,7 @@ $(error BLD_MODEL not set correctly should be small, medium or large)
 endif
 endif
 # Target suffix
-TARGET_SUFFIX := .hex
+TARGET_SUFFIX := $(if $(TARGET_SUFFIX),$(TARGET_SUFFIX),.hex)
 
 ifeq ($(BLD_TYPE),debug)
 CFLAGS += --debug
@@ -96,7 +96,7 @@ define GEN_LIBS
 ifeq ($(findstring $(1),$(LIBRARY_LIST)),)
 LIBRARY_LIST += $(1)
 $(1)-deps :=
-$(1)-deps += $$(addprefix $$(BLD_OUTPUT)/,$$(patsubst %.asm,%.rel, $$(filter %.asm,$$(SRC-$(1)))))
+$(1)-deps += $$(addprefix $$(BLD_OUTPUT)/,$$(patsubst %.asm,%.rel,$$(filter %.asm,$$(SRC-$(1)))))
 $(1)-deps += $$(addprefix $$(BLD_OUTPUT)/,$$(patsubst %.c,%.rel,$$(filter %.c,$$(SRC-$(1)))))
 $(BLD_OUTPUT)/$(LIB_PREFIX)$(1)$(LIB_SUFFIX): $$($(1)-deps)
 	@echo "Library   : $$(notdir $$@)" $(NOOUT)
