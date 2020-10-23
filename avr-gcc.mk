@@ -72,7 +72,10 @@ AVRFLAGS += -Os
 endif
 
 AVRFLAGS += -fpack-struct
+ifneq ($(SHORT_ENUMS),n)
+# Create smallest enum by default unless disabled in system file
 AVRFLAGS += -fshort-enums
+endif
 AVRFLAGS += -funsigned-char
 AVRFLAGS += -funsigned-bitfields
 AVRFLAGS += -fno-exceptions 

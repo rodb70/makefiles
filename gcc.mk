@@ -55,12 +55,11 @@ COMFLAGS += -Wextra
 COMFLAGS += -Wunreachable-code
 COMFLAGS += -fstrict-aliasing
 COMFLAGS += -funsigned-bitfields
-COMFLAGS += -fshort-enums
 COMFLAGS += -fno-builtin
 COMFLAGS += -fno-common
 
 ifneq ($(SHORT_ENUMS),n)
-# Create smallets enum by default unless disabled in system file
+# Create smallest enum by default unless disabled in system file
 COMFLAGS += -fshort-enums
 endif
 
