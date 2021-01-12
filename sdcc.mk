@@ -138,7 +138,7 @@ $(foreach lib,$(LIB-app),$(eval $(call GEN_LIBS,$(lib))))
 $(BLD_OUTPUT)/%.rel: %.c $(sort $(MAKEFILE_LIST)) $(PRE_TARGETS)
 	@echo "Compiling : $(notdir $<)" $(NOOUT)
 	$(call IF_NOT_EXIST_MKDIR,$(@D))
-	$(CC) -MMD $(CPPFLAGS) $< | sed "s|^\(.*\).rel^|$(BLD_OUTPUT)/$(dir $<)\1.rel|" > $(basename $@).d
+	$(CC) -M $(CPPFLAGS) $< | sed "s|^\(.*\).rel|$(BLD_OUTPUT)/$(dir $<)\1.rel|" > $(basename $@).d
 	$(CC) -c $(CFLAGS) $< -o $@
 
 ifneq ($(filter -mmcs51,$(CFLAGS)),)
