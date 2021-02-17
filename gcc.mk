@@ -43,6 +43,7 @@ ifneq ($(PEDANDIC),n)
 COMFLAGS += -pedantic
 COMFLAGS += -pedantic-errors
 endif
+COMFLAGS += -Wshadow
 COMFLAGS += -Werror
 COMFLAGS += -Wall
 COMFLAGS += -Wextra
