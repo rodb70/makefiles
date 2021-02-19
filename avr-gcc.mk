@@ -171,7 +171,9 @@ ODFLAGS += -h -S
 ifneq ($(BLD_TYPE),lint)
 ALL_TARGETS += $(BLD_OUTPUT)/$(BLD_TARGET).eep
 ALL_TARGETS += $(BLD_OUTPUT)/$(BLD_TARGET).lss
+ifeq ($(AVR_SIZE),y)
 ALL_TARGETS += avr-size
+endif
 endif
 ifeq ($(IS_BOOTLOADER),y)
 LFLAGS += -Wl,--relax,--gc-sections -Wl,--section-start=.text=$(BOOT_BASE_ADDRESS)

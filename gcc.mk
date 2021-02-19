@@ -43,7 +43,10 @@ ifneq ($(PEDANDIC),n)
 COMFLAGS += -pedantic
 COMFLAGS += -pedantic-errors
 endif
+ifneq ($(WSHADOW),n)
+# Disable shadow check if necessary
 COMFLAGS += -Wshadow
+endif
 COMFLAGS += -Werror
 COMFLAGS += -Wall
 COMFLAGS += -Wextra
@@ -76,6 +79,7 @@ AFLAGS += -g3 -ggdb
 CFLAGS += -g3 -ggdb
 CXXFLAGS += -g3 -ggdb
 LFLAGS += -g3 -ggdb
+LFLAGS += -Wl,--print-memory-usage
 
 # Tool chain defines
 CXX := $(CROSS_COMPILE)g++
