@@ -79,7 +79,9 @@ AFLAGS += -g3 -ggdb
 CFLAGS += -g3 -ggdb
 CXXFLAGS += -g3 -ggdb
 LFLAGS += -g3 -ggdb
+ifeq ($(PRINT_MEMORY_USAGE),y)
 LFLAGS += -Wl,--print-memory-usage
+endif
 
 # Tool chain defines
 CXX := $(CROSS_COMPILE)g++
