@@ -150,12 +150,12 @@ $(if $(CPU),,$(error CPU not in $(CPU_LIST)))
 INC += $(if $(wildcard $(SYS_PATH)/$(BLD_TARGET)/Makefile),$(SYS_PATH)/$(BLD_TARGET))
 REALCPU := $(CPU)
 ifeq ($(BLD_TYPE),lint)
-COMFLAGS += -DLINT_$(call TOUPPERCASE,$(CPU))=1
+COMFLAGS += -DLINT_$(call TOUPPERCASE,$(subst -,_,$(CPU)))=1
 COMFLAGS += -D__LINT__
 override TARGET_SUFFIX :=
 endif
 ifeq ($(BLD_TYPE),test)
-COMFLAGS += -DTEST_$(call TOUPPERCASE,$(CPU))=1
+COMFLAGS += -DTEST_$(call TOUPPERCASE,$(subst -,_,$(CPU)))=1
 CPU := host
 COMPILER := gcc
 override TARGET_SUFFIX :=
@@ -181,8 +181,8 @@ endif
 ifeq ($(filter $(BLD_TYPE),$(BLD_TYPE_LIST)),)
 $(error BLD_TYPE set to $(if $(BLD_TYPE),$(BLD_TYPE) is not defined,nothing) try: $(subst $(SPACE),$(COMMA),$(BLD_TYPE_LIST)))
 endif
-COMFLAGS += $(if $(CPU),-D$(call TOUPPERCASE,$(CPU))=1)
-COMFLAGS += $(if $(BOARD),-D$(call TOUPPERCASE,$(BOARD))=1)
+COMFLAGS += $(if $(CPU),-D$(call TOUPPERCASE,$(subst -,_,$(CPU)))=1)
+COMFLAGS += $(if $(BOARD),-D$(call TOUPPERCASE,$(subst -,_,$(BOARD)))=1)
 
 include $(MAK_PATH)/$(CPU)-$(COMPILER).mk
 include $(MAK_PATH)/tool-$(HOSTARCH).mk
