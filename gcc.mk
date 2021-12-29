@@ -171,19 +171,19 @@ $(BLD_OUTPUT)/%.o: %.c $(sort $(MAKEFILE_LIST)) $(PRE_TARGETS)
 $(BLD_OUTPUT)/%.o: %.cpp $(sort $(MAKEFILE_LIST)) $(PRE_TARGETS)
 	@echo "C++       : $(notdir $<)" $(NOOUT)
 	$(call IF_NOT_EXIST_MKDIR,$(@D))
-	$(CXX) -c $< $(CXXFLAGS) -Wa,-adhlns="$(@:%.o=%.lst)" -MMD -MP -MF $(@:%.o=%.d) -MT $(@) -o $@
+	$(CXX) -c $< $(CXXFLAGS) $(CXXFLAGS-$(<F)) -Wa,-adhlns="$(@:%.o=%.lst)" -MMD -MP -MF $(@:%.o=%.d) -MT $(@) -o $@
 
 # Build an object file from a C++ file
 $(BLD_OUTPUT)/%.o: %.cc $(sort $(MAKEFILE_LIST)) $(PRE_TARGETS)
 	@echo "C++       : $(notdir $<)" $(NOOUT)
 	$(call IF_NOT_EXIST_MKDIR,$(@D))
-	$(CXX) -c $< $(CXXFLAGS) -Wa,-adhlns="$(@:%.o=%.lst)" -MMD -MP -MF $(@:%.o=%.d) -MT $(@) -o $@
+	$(CXX) -c $< $(CXXFLAGS) $(CXXFLAGS-$(<F)) -Wa,-adhlns="$(@:%.o=%.lst)" -MMD -MP -MF $(@:%.o=%.d) -MT $(@) -o $@
 
 # Build an object file from an assembly file filtering through the C pre-processor
 $(BLD_OUTPUT)/%.o: %.S $(sort $(MAKEFILE_LIST)) $(PRE_TARGETS)
 	@echo "Assembling: $(notdir $<)" $(NOOUT)
 	$(call IF_NOT_EXIST_MKDIR,$(@D))
-	$(CC) $(AFLAGS) -Wa,-adhlns="$(@:%.o=%.lst)" -MMD -MP -MF $(@:%.o=%.d) -MT $(@) $< -o $@
+	$(CC) $(AFLAGS)  $(AFLAGS-$(<F))-Wa,-adhlns="$(@:%.o=%.lst)" -MMD -MP -MF $(@:%.o=%.d) -MT $(@) $< -o $@
 
 # Build a list of oject files and library files to link the main elf execautable with
 $(BLD_TARGET)-bldeps :=
