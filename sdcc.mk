@@ -38,7 +38,7 @@ __sdccCross := sdcc-
 endif
 
 # Locate a dos2unix tool there are 2 possibilities that can operate in a similar way
-UNIX2DOS := $(wildcard $(addsuffix /unix2dos,$(subst :, ,$(PATH))))
+UNIX2DOS := $(firstword $(wildcard $(addsuffix /unix2dos,$(subst :, ,$(PATH)))))
 ifeq ($(UNIX2DOS),)
 UNIX2DOS := $(wildcard $(addsuffix /todos,$(subst :, ,$(PATH))))
 endif
