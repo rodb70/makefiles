@@ -38,7 +38,7 @@ __sdccCross := sdcc-
 endif
 
 # Locate a dos2unix tool there are 2 possibilities that can operate in a similar way
-UNIX2DOS := $(firstword $(wildcard $(addsuffix /unix2dos,$(subst :, ,$(PATH)))))
+UNIX2DOS := $(wildcard $(addsuffix /unix2dos,$(subst :, ,$(PATH))))
 ifeq ($(UNIX2DOS),)
 UNIX2DOS := $(wildcard $(addsuffix /todos,$(subst :, ,$(PATH))))
 endif
@@ -138,7 +138,7 @@ $(foreach lib,$(LIB-app),$(eval $(call GEN_LIBS,$(lib))))
 $(BLD_OUTPUT)/%.rel: %.c $(sort $(MAKEFILE_LIST)) $(PRE_TARGETS)
 	@echo "Compiling : $(notdir $<)" $(NOOUT)
 	$(call IF_NOT_EXIST_MKDIR,$(@D))
-	$(CC) -M $(CPPFLAGS) $< | sed "s|^\(.*\).rel|$(BLD_OUTPUT)/$(dir $<)\1.rel|" > $(basename $@).d
+	$(CC) -MMD $(CPPFLAGS) $< 2> /dev/null | sed "s|^\(.*\).rel^|$(BLD_OUTPUT)/$(dir $<)\1.rel|" > $(basename $@).d
 	$(CC) -c $(CFLAGS) $< -o $@
 
 ifneq ($(filter -mmcs51,$(CFLAGS)),)
@@ -157,7 +157,7 @@ $(BLD_OUTPUT)/%.rel: %.asm $(sort $(MAKEFILE_LIST)) $(PRE_TARGETS)
 	@echo "Assembling: $(notdir $<)" $(NOOUT)
 	$(call IF_NOT_EXIST_MKDIR,$(@D))
 	cp $< $(dir $@)
-	$(ASZ80) $(ADEBUG) -plosgffw $(dir $@)/$<
+	$(ASZ80) $(ADEBUG) -plosgffw $(dir $@)/$(<F)
 
 endif
 
