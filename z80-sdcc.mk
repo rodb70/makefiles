@@ -38,12 +38,12 @@ ifeq ($(INC_PART),upper)
 include $(MAK_PATH)/$(COMPILER).mk 
 
 ifneq ($(SDCC_NO_CODE_SIZE),y)
-ifeq ($(FLASH_CODE_SIZE),)
-FLASH_CODE_SIZE := 32768
-endif
+FLASH_CODE_SIZE := $(if $(FLASH_CODE_SIZE),$(FLASH_CODE_SIZE),32768)
 endif
 
+CPPFLAGS += -mz80
 CFLAGS += -mz80
+CFLAGS += --std-sdcc99
 
 LFLAGS += -mz80
 ifneq ($(SDCC_NO_CODE_LOC),y)
@@ -59,7 +59,7 @@ endif
 #-----------------------------------------------------------------------------
 ifeq ($(INC_PART),middle)
 # After generic targets 
-include $(MAK_PATH)/$(COMPILER).mk 
+include $(MAK_PATH)/$(COMPILER).mk
 
 LOAD_PORT := /dev/ttyUSB0
 #LOAD_PARMS := -o bridge

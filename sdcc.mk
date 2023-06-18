@@ -123,12 +123,12 @@ CFLAGS += $(CSTANDARD)
 CFLAGS += $(COMFLAGS)
 CPPFLAGS += $(COMFLAGS)
 ifeq ($(SRC_MAIN),)
-$(error SRC_MAIN not defined you must declare this to compile with SDCC)
+$(if $(filter -mmcs51,$(CFLAGS)),$(error SRC_MAIN not defined you must declare this to compile with SDCC))
 endif
 # Search and locate SDCC_MAIN file in the include list
-__sdccMainFile := $(wildcard $(if $(INC),$(addsuffix /$(SRC_MAIN),$(INC)),$(SRC_MAIN)))
+__sdccMainFile := $(if $(filter -mmcs51,$(CFLAGS)),$(wildcard $(if $(INC),$(addsuffix /$(SRC_MAIN),$(INC)),$(SRC_MAIN))))
 $(if $(word 2,$(__sdccMainFile)),$(error SRC_MAIN declared more than once))
-$(if $(__sdccMainFile),,$(error Could not find $(SRC_MAIN)))
+$(if $(filter -mmcs51,$(CFLAGS)),$(if $(__sdccMainFile),,$(error Could not find $(SRC_MAIN))))
 SRC_MAIN := $(__sdccMainFile)
 
 $(BLD_OUTPUT)/$(TARGET)$(TARGET_SUFFIX): $(BLD_OUTPUT)/$(BLD_TARGET).ihx
@@ -157,7 +157,7 @@ $(BLD_OUTPUT)/%.rel: %.asm $(sort $(MAKEFILE_LIST)) $(PRE_TARGETS)
 	@echo "Assembling: $(notdir $<)" $(NOOUT)
 	$(call IF_NOT_EXIST_MKDIR,$(@D))
 	cp $< $(dir $@)
-	$(ASZ80) $(ADEBUG) -plosgffw $(dir $@)$(<F)
+	$(ASZ80) $(ADEBUG) -plosgffw $(dir $@)/$<
 
 endif
 
