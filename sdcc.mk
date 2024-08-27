@@ -54,7 +54,7 @@ AS8051 := $(__sdccCross)asx8051
 ASGB80 := $(__sdccCross)as-gbz80
 ASZ80  := $(__sdccCross)sdasz80
 # Librarian
-AR := $(__sdccCross)sdcclib
+AR := $(__sdccCross)sdar
 # makebin
 MKBIN := $(__sdccCross)makebin
 # packhex command
