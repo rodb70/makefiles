@@ -54,7 +54,9 @@ COMFLAGS += -fstrict-overflow
 
 COMFLAGS += -Wno-strict-aliasing
 CFLAGS += -Wstrict-prototypes
+ifneq ($(WUNDEF),n)
 COMFLAGS += -Wundef
+endif
 COMFLAGS += -Wextra
 COMFLAGS += -Wunreachable-code
 COMFLAGS += -fstrict-aliasing
