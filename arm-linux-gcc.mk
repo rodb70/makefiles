@@ -1,19 +1,7 @@
 #-----------------------------------------------------------------------------
-# This is the makefile compiler or cpu target template.  There are 3 parts to 
-# this template.  Each file is included 3 times and the INC_PART variable is set
-# to upper, middle, lower as needed    
-# upper:
-# This is here CPU or compiler specific make defines CFLAGS, AFLAGS, LFLAGS 
-# and any other CPU or compiler specific defines are declared here.
-#
-# middle:
-# This is included after the global targets of all, clean extra CPU or compiler
-# specific global targets can be created here.
-#
-# lower:
-# implicat rules for the compiler are created here
+# ARM Linux 32-bit compiler template 
 #-License----------------------------------------------------------------------
-#Copyright (c) 2011, developer@teamboyce.com
+#Copyright (c) 2025, developer@teamboyce.com
 #All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without 

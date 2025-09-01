@@ -20,7 +20,9 @@ HOSTCC := gcc
 HOSTCXX := g++
 
 HOSTCOMFLAGS := $(HOSTCOMFLAGS)
+ifneq ($(PEDANDIC),n)
 HOSTCOMFLAGS += -pedantic
+endif
 HOSTCOMFLAGS += -Wall 
 HOSTCOMFLAGS += -Wextra 
 HOSTCOMFLAGS += -fstrict-overflow

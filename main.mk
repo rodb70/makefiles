@@ -144,6 +144,8 @@ $(foreach goal,$(MAKECMDGOALS),$(eval $(call MK_OVERRIDE_TARGET,$(goal))))
 
 # Set the outout path
 BLD_OUTPUT := $(BLD_OUTDIR)/$(BLD_TARGET)/$(CPU)-$(BLD_TYPE)
+# Set the tool output path default
+TOOL_OUTPUT := $(BLD_OUTPUT)/tool
 # Include systems makefile if exists
 -include $(SYS_PATH)/$(BLD_TARGET)/Makefile
 $(if $(CPU),,$(error CPU not in $(CPU_LIST)))

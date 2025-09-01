@@ -34,7 +34,7 @@ EMPTY :=
 SPACE := $(EMPTY) $(EMPTY)
 COMMA := $(EMPTY),$(EMPTY)
 
-BLD_TYPE_LIST := debug release test clean lint
+BLD_TYPE_LIST := debug release test unity clean lint
 
 __get_word=$(word $(1),$(2))
 GET_BUILD=$(call __get_word,1,$(subst _, ,$(1)))
@@ -167,7 +167,7 @@ endif
 # 1 - The name of the tool
 define BUILD_A_TOOL
 $(1) := ./$(BLD_OUTPUT)/bin/$(1) 
-$$($(1)): $$(addprefix $$(BLD_OUTPUT)/,$$($(1)-src:.c=.o))
+$$($(1)): $$(addprefix $$(TOOL_OUTPUT)/,$$($(1)-src:.c=.o))
 	@echo "Host build: $$(notdir $$@)" $$(NOOUT)
 	$$(call IF_NOT_EXIST_MKDIR,$$(@D))
 	$(HOSTCC) $(HOSTLFLAGS) -Wl,-Map,$$@.map -Wl,--start-group $$^ $$(TOOL_LIBS) -Wl,--end-group -o $$@
@@ -177,7 +177,7 @@ endef
 # Compile a tool
 # 1 - the C file to compile
 define COMPILE_A_TOOL_O
-$(BLD_OUTPUT)/$(1:.c=.o): $(1) $(PRE_TARGETS)
+$(TOOL_OUTPUT)/$(1:.c=.o): $(1) $(PRE_TARGETS)
 	@echo "Host CC   : $$(notdir $$@)" $$(NOOUT)
 	$$(call IF_NOT_EXIST_MKDIR,$$(@D))
 	$(HOSTCC) $(HOSTCFLAGS) -Wa,-adhlns="$$(@:.o=.lst)" -MMD -MP -MF $$(@:.o=.d) -MT $$@ -c $$< -o $$@
